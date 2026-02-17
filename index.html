@@ -179,12 +179,19 @@ function addPerson(){
     render();
 }
 
+// פונקציה חדשה עם בחירה אם להוסיף או להוריד נקודה
 function addStreak(index){
     let p = data.people[index];
-    p.streak++;
+    let add = confirm(`לחץ OK להוסיף נקודה, ביטול להוריד נקודה עבור ${p.name}?`);
 
-    if(p.streak % 10 === 0){
-        p.wins++;
+    if(add){
+        p.streak++;
+        if(p.streak % 10 === 0){
+            p.wins++;
+        }
+    } else {
+        if(p.streak > 0) p.streak--;
+        if(p.streak % 10 === 9 && p.wins > 0) p.wins--;
     }
 
     save();
