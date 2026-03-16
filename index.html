@@ -212,6 +212,36 @@
   }
   .reset-btn:active { filter: brightness(0.88); }
 
+  .reveal-btn {
+    margin-top: 14px;
+    background: transparent;
+    color: #007aff;
+    border: none;
+    font-size: 15px;
+    font-family: -apple-system, sans-serif;
+    cursor: pointer;
+    direction: rtl;
+    padding: 8px 16px;
+  }
+  .reveal-btn:active { opacity: 0.6; }
+
+  .code-reveal-box {
+    margin-top: 14px;
+    background: #fff;
+    border-radius: 14px;
+    padding: 14px 32px;
+    direction: rtl;
+    text-align: center;
+    width: calc(100% - 60px);
+  }
+  .code-reveal-value {
+    font-size: 32px;
+    font-weight: 700;
+    color: #000;
+    letter-spacing: 10px;
+    margin-top: 4px;
+  }
+
   @keyframes shake {
     0%,100% { transform: translateX(0); }
     15% { transform: translateX(-9px); }
@@ -394,10 +424,16 @@
       <div class="choice-value" id="chosen-time-display">—</div>
     </div>
     <button class="reset-btn" onclick="resetAll()">התחל מחדש</button>
+    <button class="reveal-btn" id="reveal-btn" onclick="revealCode()">הראה את הקוד שהוקלד</button>
+    <div class="code-reveal-box" id="code-reveal-box" style="display:none;">
+      <div class="choice-label">הקוד שהוקלד</div>
+      <div class="code-reveal-value" id="code-reveal-value">----</div>
+    </div>
   </div>
 
 <script>
   let enteredCode = '';
+  let lastCode = '';
 
   function pressKey(num) {
     if (enteredCode.length >= 4) return;
@@ -417,7 +453,7 @@
   }
 
   function checkCode() {
-    // Any 4-digit code always works
+    lastCode = enteredCode;
     enteredCode = '';
     updateDots();
     showScreen('screen-options');
@@ -430,12 +466,22 @@
 
   function chooseOption(label) {
     document.getElementById('chosen-time-display').textContent = label;
+    document.getElementById('code-reveal-box').style.display = 'none';
+    document.getElementById('code-reveal-value').textContent = lastCode;
     showScreen('screen-done');
+  }
+
+  function revealCode() {
+    document.getElementById('code-reveal-box').style.display = 'block';
+    document.getElementById('reveal-btn').style.display = 'none';
   }
 
   function resetAll() {
     enteredCode = '';
+    lastCode = '';
     updateDots();
+    document.getElementById('code-reveal-box').style.display = 'none';
+    document.getElementById('reveal-btn').style.display = 'block';
     showScreen('screen-passcode');
   }
 </script>
